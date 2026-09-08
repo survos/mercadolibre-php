@@ -3,9 +3,25 @@
     "type": "library",
     "description": "Mercado Libre API client for PHP. Framework-agnostic -- usable from Symfony, WordPress, or plain PHP.",
     "license": "MIT",
-    "keywords": ["mercadolibre", "mercadolivre", "meli", "api", "client", "marketplace", "latam"],
-    "autoload": { "psr-4": { "Survos\\MercadoLibre\\": "src/" } },
-    "autoload-dev": { "psr-4": { "Survos\\MercadoLibre\\Tests\\": "tests/" } },
+    "keywords": [
+        "mercadolibre",
+        "mercadolivre",
+        "meli",
+        "api",
+        "client",
+        "marketplace",
+        "latam"
+    ],
+    "autoload": {
+        "psr-4": {
+            "Survos\\MercadoLibre\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Survos\\MercadoLibre\\Tests\\": "tests/"
+        }
+    },
     "require": {
         "php": "^8.5",
         "symfony/http-client-contracts": "^3.7"
@@ -20,5 +36,10 @@
         "survos/marketplace-contracts": "Provider-neutral listing models, if you want to target eBay and Mercado Libre through one interface."
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-main": "2.27.x-dev"
+        }
+    }
 }
