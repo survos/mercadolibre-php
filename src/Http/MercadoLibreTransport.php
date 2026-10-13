@@ -27,13 +27,8 @@ final readonly class MercadoLibreTransport implements MercadoLibreTransportInter
 
     public function request(string $method, string $path, array $query = [], ?array $body = null): array
     {
-        if ($this->tokenProvider === null) {
-            throw new \LogicException(sprintf(
-                '%s %s needs a seller token, but this transport was built without a token provider. '
-                . 'Use requestAnonymous() for public endpoints.',
-                $method,
-                $path,
-            ));
+        if (null === $this->tokenProvider) {
+            throw new \LogicException(sprintf('%s %s needs a seller token, but this transport was built without a token provider. Use requestAnonymous() for public endpoints.', $method, $path));
         }
 
         return $this->send($method, $path, $query, $body, $this->tokenProvider->accessToken());
@@ -54,22 +49,22 @@ final readonly class MercadoLibreTransport implements MercadoLibreTransportInter
     {
         $options = ['headers' => ['Accept' => 'application/json']];
 
-        if ($token !== null) {
-            $options['headers']['Authorization'] = 'Bearer ' . $token;
+        if (null !== $token) {
+            $options['headers']['Authorization'] = 'Bearer '.$token;
         }
-        if ($query !== []) {
-            $options['query'] = array_filter($query, static fn (mixed $v): bool => $v !== null);
+        if ([] !== $query) {
+            $options['query'] = array_filter($query, static fn (mixed $v): bool => null !== $v);
         }
-        if ($body !== null) {
+        if (null !== $body) {
             $options['headers']['Content-Type'] = 'application/json';
             $options['body'] = json_encode($body, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         }
 
-        $response = $this->httpClient->request($method, self::API_HOST . $path, $options);
+        $response = $this->httpClient->request($method, self::API_HOST.$path, $options);
         $status = $response->getStatusCode();
         $raw = $response->getContent(throw: false);
 
-        if ($raw === '') {
+        if ('' === $raw) {
             if ($status >= 400) {
                 throw MercadoLibreApiException::fromPayload($status, [], $raw);
             }
@@ -84,7 +79,7 @@ final readonly class MercadoLibreTransport implements MercadoLibreTransportInter
         }
 
         if ($status >= 400) {
-            /** @var array<string, mixed> $payload */
+            /* @var array<string, mixed> $payload */
             throw MercadoLibreApiException::fromPayload($status, $payload, $raw);
         }
 

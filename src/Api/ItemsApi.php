@@ -33,7 +33,7 @@ final readonly class ItemsApi
     public function get(string $itemId): PublishedItem
     {
         /** @var array<string, mixed> $response */
-        $response = $this->transport->request('GET', '/items/' . rawurlencode($itemId));
+        $response = $this->transport->request('GET', '/items/'.rawurlencode($itemId));
 
         return PublishedItem::fromArray($response);
     }
@@ -47,7 +47,7 @@ final readonly class ItemsApi
     public function update(string $itemId, array $changes): PublishedItem
     {
         /** @var array<string, mixed> $response */
-        $response = $this->transport->request('PUT', '/items/' . rawurlencode($itemId), body: $changes);
+        $response = $this->transport->request('PUT', '/items/'.rawurlencode($itemId), body: $changes);
 
         return PublishedItem::fromArray($response);
     }

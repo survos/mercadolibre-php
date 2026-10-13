@@ -50,10 +50,10 @@ class MercadoLibreApiException extends \RuntimeException implements MercadoLibre
         $error = isset($payload['error']) ? (string) $payload['error'] : null;
 
         return match (true) {
-            $statusCode === 401, $statusCode === 403 => new MercadoLibreAuthenticationException(
+            401 === $statusCode, 403 === $statusCode => new MercadoLibreAuthenticationException(
                 $statusCode, $error, $causes, $rawBody, $message,
             ),
-            $statusCode === 429 => new MercadoLibreRateLimitException(
+            429 === $statusCode => new MercadoLibreRateLimitException(
                 $statusCode, $error, $causes, $rawBody, $message,
             ),
             default => new self($statusCode, $error, $causes, $rawBody, $message),
@@ -73,22 +73,22 @@ class MercadoLibreApiException extends \RuntimeException implements MercadoLibre
         array $causes,
         ?string $rawBody,
     ): string {
-        $text = sprintf('Mercado Libre returned HTTP %d%s', $status, $error !== null ? ' (' . $error . ')' : '');
+        $text = sprintf('Mercado Libre returned HTTP %d%s', $status, null !== $error ? ' ('.$error.')' : '');
 
-        if ($message !== '') {
-            $text .= ': ' . $message;
+        if ('' !== $message) {
+            $text .= ': '.$message;
         }
 
-        if ($causes !== []) {
-            return $text . "\n" . implode("\n", array_map(static fn (string $c): string => '  ' . $c, $causes));
+        if ([] !== $causes) {
+            return $text."\n".implode("\n", array_map(static fn (string $c): string => '  '.$c, $causes));
         }
 
-        if ($message !== '') {
+        if ('' !== $message) {
             return $text;
         }
 
-        return $rawBody !== null && $rawBody !== ''
-            ? $text . '. Body: ' . mb_substr($rawBody, 0, 300)
-            : $text . '.';
+        return null !== $rawBody && '' !== $rawBody
+            ? $text.'. Body: '.mb_substr($rawBody, 0, 300)
+            : $text.'.';
     }
 }

@@ -36,6 +36,6 @@ final readonly class PublishedItem
     /** Live and visible, as opposed to `paused`, `under_review` or `closed`. */
     public function isActive(): bool
     {
-        return $this->status === 'active';
+        return 'active' === $this->status;
     }
 }

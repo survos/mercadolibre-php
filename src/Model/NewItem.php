@@ -11,10 +11,10 @@ namespace Survos\MercadoLibre\Model;
 final readonly class NewItem
 {
     /**
-     * @param string             $price      decimal string, e.g. "80.00". Kept exact here and
-     *                                       converted to a JSON number exactly once, in
-     *                                       {@see toArray()}, because that is what the API wants
-     * @param list<Picture>      $pictures
+     * @param string              $price      decimal string, e.g. "80.00". Kept exact here and
+     *                                        converted to a JSON number exactly once, in
+     *                                        {@see toArray()}, because that is what the API wants
+     * @param list<Picture>       $pictures
      * @param list<ItemAttribute> $attributes
      */
     public function __construct(
@@ -49,16 +49,16 @@ final readonly class NewItem
             'condition' => $this->condition->value,
         ];
 
-        if ($this->pictures !== []) {
+        if ([] !== $this->pictures) {
             $data['pictures'] = array_map(static fn (Picture $p): array => $p->toArray(), $this->pictures);
         }
-        if ($this->attributes !== []) {
+        if ([] !== $this->attributes) {
             $data['attributes'] = array_map(static fn (ItemAttribute $a): array => $a->toArray(), $this->attributes);
         }
-        if ($this->description !== null) {
+        if (null !== $this->description) {
             $data['description'] = ['plain_text' => $this->description];
         }
-        if ($this->sellerCustomField !== null) {
+        if (null !== $this->sellerCustomField) {
             // The closest thing Mercado Libre has to a SKU on a plain listing.
             $data['seller_custom_field'] = $this->sellerCustomField;
         }

@@ -31,8 +31,8 @@ final class RefreshingTokenProvider implements AccessTokenProviderInterface
     private ?MercadoLibreToken $cached = null;
 
     /**
-     * @param callable(): ?MercadoLibreToken     $load
-     * @param callable(MercadoLibreToken): void  $persist
+     * @param callable(): ?MercadoLibreToken    $load
+     * @param callable(MercadoLibreToken): void $persist
      */
     public function __construct(
         private readonly OAuthService $oauth,
@@ -58,14 +58,8 @@ final class RefreshingTokenProvider implements AccessTokenProviderInterface
     {
         $token = $this->cached ??= ($this->load)();
 
-        if ($token === null) {
-            throw new MercadoLibreAuthenticationException(
-                401,
-                null,
-                [],
-                null,
-                'No stored Mercado Libre token. Send the seller through OAuthService::consentUrl() first.',
-            );
+        if (null === $token) {
+            throw new MercadoLibreAuthenticationException(401, null, [], null, 'No stored Mercado Libre token. Send the seller through OAuthService::consentUrl() first.');
         }
 
         if (!$token->isExpired(leewaySeconds: $this->leewaySeconds)) {
@@ -73,13 +67,7 @@ final class RefreshingTokenProvider implements AccessTokenProviderInterface
         }
 
         if (!$token->canRefresh()) {
-            throw new MercadoLibreAuthenticationException(
-                401,
-                null,
-                [],
-                null,
-                'The Mercado Libre access token expired and there is no refresh token. Re-consent required.',
-            );
+            throw new MercadoLibreAuthenticationException(401, null, [], null, 'The Mercado Libre access token expired and there is no refresh token. Re-consent required.');
         }
 
         $refreshed = $this->oauth->refresh($token);

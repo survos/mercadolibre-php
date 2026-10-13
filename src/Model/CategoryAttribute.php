@@ -73,14 +73,14 @@ final readonly class CategoryAttribute
 
     public function isClosedSet(): bool
     {
-        return $this->allowedValues !== [];
+        return [] !== $this->allowedValues;
     }
 
     /** Resolve a human value to its id, so the listing uses value_id where possible. */
     public function valueIdFor(string $name): ?string
     {
         foreach ($this->allowedValues as $value) {
-            if (strcasecmp($value->name, $name) === 0) {
+            if (0 === strcasecmp($value->name, $name)) {
                 return $value->id;
             }
         }

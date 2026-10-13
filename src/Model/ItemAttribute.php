@@ -26,9 +26,9 @@ final readonly class ItemAttribute
     {
         $data = ['id' => $this->id];
 
-        if ($this->valueId !== null) {
+        if (null !== $this->valueId) {
             $data['value_id'] = $this->valueId;
-        } elseif ($this->valueName !== null) {
+        } elseif (null !== $this->valueName) {
             $data['value_name'] = $this->valueName;
         }
 

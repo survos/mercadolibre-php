@@ -61,7 +61,7 @@ final readonly class MercadoLibreToken
 
     public function canRefresh(): bool
     {
-        return $this->refreshToken !== null;
+        return null !== $this->refreshToken;
     }
 
     /**
@@ -79,7 +79,7 @@ final readonly class MercadoLibreToken
             expiresAt: $next->expiresAt,
             refreshToken: $next->refreshToken,
             userId: $next->userId ?? $this->userId,
-            scopes: $next->scopes !== [] ? $next->scopes : $this->scopes,
+            scopes: [] !== $next->scopes ? $next->scopes : $this->scopes,
         );
     }
 }

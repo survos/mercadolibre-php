@@ -35,11 +35,8 @@ final readonly class OAuthService
      */
     public function consentUrl(?string $state = null): string
     {
-        if ($this->credentials->redirectUri === null) {
-            throw new \LogicException(
-                'consentUrl() needs the redirect URI, and it must match one registered on the '
-                . 'application exactly -- Mercado Libre compares the full string.',
-            );
+        if (null === $this->credentials->redirectUri) {
+            throw new \LogicException('consentUrl() needs the redirect URI, and it must match one registered on the application exactly -- Mercado Libre compares the full string.');
         }
 
         $query = [
@@ -47,11 +44,11 @@ final readonly class OAuthService
             'client_id' => $this->credentials->clientId,
             'redirect_uri' => $this->credentials->redirectUri,
         ];
-        if ($state !== null) {
+        if (null !== $state) {
             $query['state'] = $state;
         }
 
-        return $this->site->authHost() . '/authorization?' . http_build_query($query);
+        return $this->site->authHost().'/authorization?'.http_build_query($query);
     }
 
     /** Exchange the `code` from your redirect. Single use, and short-lived. */
@@ -74,7 +71,7 @@ final readonly class OAuthService
      */
     public function refresh(MercadoLibreToken $token): MercadoLibreToken
     {
-        if ($token->refreshToken === null) {
+        if (null === $token->refreshToken) {
             throw new \LogicException('Cannot refresh a token that has no refresh token.');
         }
 
@@ -93,7 +90,7 @@ final readonly class OAuthService
      */
     private function token(array $body): array
     {
-        $response = $this->httpClient->request('POST', self::API_HOST . '/oauth/token', [
+        $response = $this->httpClient->request('POST', self::API_HOST.'/oauth/token', [
             'headers' => [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/x-www-form-urlencoded',

@@ -20,7 +20,7 @@ final class CategoriesApiTest extends TestCase
 {
     private function fixture(string $name): string
     {
-        return (string) file_get_contents(__DIR__ . '/fixtures/' . $name);
+        return (string) file_get_contents(__DIR__.'/fixtures/'.$name);
     }
 
     private function api(string $body): CategoriesApi
@@ -111,7 +111,7 @@ final class CategoriesApiTest extends TestCase
         $attributes = $this->api($this->fixture('categories_MLM429001_attributes.json'))->attributes('MLM429001');
         $origin = null;
         foreach ($attributes as $a) {
-            if ($a->id === 'ORIGIN') {
+            if ('ORIGIN' === $a->id) {
                 $origin = $a;
             }
         }
